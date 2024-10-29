@@ -33,6 +33,7 @@ public class GameBoard {
             }
         }
 
+
         Scene scene = new Scene(gridPane, cols * 35, rows * 35);
         primaryStage.setTitle("Minesweeper");
         primaryStage.setScene(scene);
