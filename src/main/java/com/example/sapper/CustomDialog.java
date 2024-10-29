@@ -5,7 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class CustomDialog {
-    public static void show(Stage primaryStage) {
+    public void show(Stage primaryStage, GameLogic gameLogic) {
         Dialog<ButtonType> customDialog = new Dialog<>();
         customDialog.setTitle("Пользовательский");
 
@@ -38,7 +38,7 @@ public class CustomDialog {
                     int rows = Integer.parseInt(rowsField.getText());
                     int cols = Integer.parseInt(colsField.getText());
                     int mines = Integer.parseInt(minesField.getText());
-                    Game.start(primaryStage, rows, cols, mines);
+                    gameLogic.start(primaryStage, rows, cols, mines);
                 } catch (NumberFormatException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Ошибка");

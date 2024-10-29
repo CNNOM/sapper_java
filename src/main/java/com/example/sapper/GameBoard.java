@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GameBoard {
-    public static void initialize(Stage primaryStage, int rows, int cols, int mines) {
+    public static void initialize(Stage primaryStage, int rows, int cols, int mines, GameLogic gameLogic) {
         GridPane gridPane = new GridPane();
 
         for (int i = 0; i < rows; i++) {
@@ -23,9 +23,9 @@ public class GameBoard {
 
                 label.setOnMouseClicked(event -> {
                     if (event.getButton() == MouseButton.PRIMARY) {
-                        Game.revealCell(row, col, label, gridPane, primaryStage);
+                        gameLogic.revealCell(row, col, label, gridPane, primaryStage);
                     } else if (event.getButton() == MouseButton.SECONDARY) {
-                        Game.toggleFlag(row, col, label);
+                        gameLogic.toggleFlag(row, col, label);
                     }
                 });
 
