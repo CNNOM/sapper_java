@@ -1,0 +1,84 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE "HelloApplication" as HelloApplication {
+  + void start(Stage)
+  + {static} void main(String[])
+}
+
+RECTANGLE "GameLogic" as GameLogic {
+  ~ void start(Stage, int, int, int)
+  ~ void revealCell(int, int, Label, GridPane, Stage)
+  ~ void toggleFlag(int, int, Label)
+  ~ void resetGame(Stage)
+}
+
+RECTANGLE "AbstractGame" as AbstractGame {
+  # int ROWS
+  # int COLS
+  # int MINES
+  # String[][] field
+  # boolean[][] revealed
+  # boolean[][] flagged
+  # boolean firstClick
+  # int firstClickRow
+  # int firstClickCol
+  + void start(Stage, int, int, int)
+  + void revealCell(int, int, Label, GridPane, Stage)
+  + void toggleFlag(int, int, Label)
+  # void generateField()
+  # boolean checkWinCondition()
+  # void showWinDialog(Stage)
+  # void showGameOverDialog(Stage)
+  + void resetGame(Stage)
+  # String getColorStyle(int)
+  # javafx.scene.Node getNodeByRowColumnIndex(int, int, GridPane)
+}
+
+RECTANGLE "Game" as Game {
+  + void start(Stage, int, int, int)
+  + void resetGame(Stage)
+}
+
+RECTANGLE "GameBoard" as GameBoard {
+  + {static} void initialize(Stage, int, int, int, GameLogic)
+}
+
+RECTANGLE "DifficultyDialog" as DifficultyDialog {
+  - HBox difficultyDialog
+  - Button beginner
+  - Button amateur
+  - Button professional
+  - Button custom
+  - GameLogic gameLogic
+  - Stage primaryStage
+  + void show(Stage, GameLogic)
+}
+
+RECTANGLE "CustomDialog" as CustomDialog {
+  - TextField rowsField
+  - TextField colsField
+  - TextField minesField
+  - Button okButton
+  - GameLogic gameLogic
+  - Stage primaryStage
+  + void show(Stage, GameLogic)
+}
+
+RECTANGLE "RulesDialog" as RulesDialog {
+  - VBox rulesDialog
+  - Button okButton
+  - GameLogic gameLogic
+  - Stage primaryStage
+  + void show(Stage, GameLogic)
+}
+
+HelloApplication --> GameLogic
+GameLogic --> AbstractGame
+AbstractGame --> Game
+GameBoard --> GameLogic
+DifficultyDialog --> GameLogic
+CustomDialog --> GameLogic
+RulesDialog --> GameLogic
+
+@enduml
