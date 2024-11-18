@@ -1,0 +1,89 @@
+@startuml
+
+class com.example.sapper.DifficultyDialog {
+- HBox difficultyDialog
+- Button beginner
+- Button amateur
+- Button professional
+- Button custom
+- GameLogic gameLogic
+- Stage primaryStage
++ void show(Stage, GameLogic)
+}
+
+abstract class com.example.sapper.AbstractGame {
+# int ROWS
+# int COLS
+# int MINES
+# String[][] field
+# boolean[][] revealed
+# boolean[][] flagged
+# boolean firstClick
+# int firstClickRow
+# int firstClickCol
++ void start(Stage, int, int, int)
++ void revealCell(int, int, Label, GridPane, Stage)
++ void toggleFlag(int, int, Label)
+# void generateField()
+# boolean checkWinCondition()
+# void showWinDialog(Stage)
+# void showGameOverDialog(Stage)
++ void resetGame(Stage)
+# String getColorStyle(int)
+# javafx.scene.Node getNodeByRowColumnIndex(int, int, GridPane)
+}
+
+class com.example.sapper.HelloApplication {
+- GameLogic gameLogic
++ void start(Stage)
++ {static} void main(String[])
+}
+
+interface com.example.sapper.GameLogic {
+~ void start(Stage, int, int, int)
+~ void revealCell(int, int, Label, GridPane, Stage)
+~ void toggleFlag(int, int, Label)
+~ void resetGame(Stage)
+}
+
+class com.example.sapper.CustomDialog {
+- TextField rowsField
+- TextField colsField
+- TextField minesField
+- Button okButton
+- GameLogic gameLogic
+- Stage primaryStage
++ void show(Stage, GameLogic)
+}
+
+class com.example.sapper.RulesDialog {
+- VBox rulesDialog
+- Button okButton
+- GameLogic gameLogic
+- Stage primaryStage
++ void show(Stage, GameLogic)
+}
+
+class com.example.sapper.Game {
++ void start(Stage, int, int, int)
++ void resetGame(Stage)
+}
+
+class com.example.sapper.GameBoard {
++ {static} void initialize(Stage, int, int, int, GameLogic)
+}
+
+com.example.sapper.GameLogic <|.. com.example.sapper.AbstractGame
+javafx.application.Application <|-- com.example.sapper.HelloApplication
+com.example.sapper.AbstractGame <|-- com.example.sapper.Game
+
+com.example.sapper.HelloApplication --> com.example.sapper.GameLogic : gameLogic
+com.example.sapper.HelloApplication --> com.example.sapper.RulesDialog : show
+com.example.sapper.RulesDialog --> com.example.sapper.DifficultyDialog : show
+com.example.sapper.DifficultyDialog --> com.example.sapper.CustomDialog : show
+com.example.sapper.DifficultyDialog --> com.example.sapper.GameLogic : start
+com.example.sapper.CustomDialog --> com.example.sapper.GameLogic : start
+com.example.sapper.Game --> com.example.sapper.GameBoard : initialize
+com.example.sapper.GameBoard --> com.example.sapper.GameLogic : uses
+
+@enduml

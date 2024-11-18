@@ -1,44 +1,55 @@
 package com.example.sapper;
 
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.ButtonBar.ButtonData;
+
+import java.io.IOException;
 
 public class RulesDialog {
+
+    @FXML
+    private VBox rulesDialog;
+
+    @FXML
+    private Button okButton;
+
+    private GameLogic gameLogic;
+    private Stage primaryStage;
+
     public void show(Stage primaryStage, GameLogic gameLogic) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Правила игры");
+        this.primaryStage = primaryStage;
+        this.gameLogic = gameLogic;
 
-        VBox vbox = new VBox(10);
-        vbox.getChildren().addAll(
-                new Label("Правила игры в сапёр:"),
-                new Label("1. Цель игры — открыть все клетки, не содержащие мины."),
-                new Label("2. Если вы откроете клетку с миной, игра закончится."),
-                new Label("3. Если вы откроете клетку с числом, оно указывает на количество мин вокруг этой клетки."),
-                new Label("4. Вы можете пометить клетку флагом, чтобы отметить её как потенциально содержащую мину."),
-                new Label("5. Игра заканчивается победой, если вы откроете все клетки, не содержащие мины.")
-        );
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RulesDialog.fxml"));
+            loader.setController(this);
+            VBox dialogVBox = loader.load();
 
-        dialog.getDialogPane().setContent(vbox);
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Правила игры");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(dialogVBox);
+            dialogStage.setScene(scene);
 
-        ButtonType okButton = new ButtonType("OK", ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButton);
+            okButton.setOnAction(event -> {
+                okButton.setVisible(false);
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == okButton) {
-                return okButton;
-            }
-            return null;
-        });
+                dialogStage.setX(50);
+                dialogStage.setY(50);
 
-        dialog.showAndWait().ifPresent(response -> {
-            if (response == okButton) {
                 DifficultyDialog difficultyDialog = new DifficultyDialog();
                 difficultyDialog.show(primaryStage, gameLogic);
-            }
-        });
+            });
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
